@@ -149,7 +149,7 @@ paymentOptions.addEventListener("change", (e) => {
 // Name validation
 
 function nameValidation(name) {
-  const nameError = document.createElement("div");
+  let nameError = document.createElement("div");
   nameError.innerHTML = "Name field cannot be empty";
   nameError.setAttribute("id", "nameError");
   if (name.value.length == 0) {
@@ -157,6 +157,7 @@ function nameValidation(name) {
     return false;
   } else {
     // need to remove the div
+    nameError = document.getElementById("nameError");
     nameError.parentNode.removeChild(nameError);
     return true;
   }
@@ -166,6 +167,70 @@ window.addEventListener("load", (e) => {
   nameValidation(nameField);
 });
 
-nameField.addEventListener("change", (e) => {
+nameField.addEventListener("keyup", (e) => {
   nameValidation(nameField);
 });
+
+// email
+const emailField = document.getElementById("mail");
+function emailValidation() {
+  const emailError = document.createElement("div");
+  emailError.setAttribute("id", "emailError");
+  emailError.innerHTML = "Could you please provide a valid email please";
+  const correctEmailFormat = /[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3}$/.test(
+    emailField.value.toUpperCase()
+  );
+  if (correctEmailFormat) {
+    return true;
+  } else {
+    emailField.parentNode.insertBefore(emailError, emailField.nextSibling);
+    return false;
+  }
+}
+
+// user must check one checkbox
+
+function activityValidation() {
+  const checkboxes = activity.getElementsByTagName("input");
+  const activityError = document.createElement("li");
+  activityError.setAttribute("div", "activityError");
+  activityError.innerHTML = "Please choose at least one activity";
+  if (
+    checkboxes[0].checked ||
+    checkboxes[1].checked ||
+    checkboxes[2].checked ||
+    checkboxes[3].checked ||
+    checkboxes[4].checked ||
+    checkboxes[5].checked ||
+    checkboxes[6].checked
+  ) {
+    console.log("One is checked");
+  } else {
+    activity.appendChild(activityError);
+  }
+}
+
+const button = document.getElementById("submit");
+
+button.addEventListener("click", (e) => {
+  activityValidation();
+  emailValidation(emailField);
+});
+
+// credit card validation
+
+const ccNum = document.getElementById("cc-num");
+console.log(ccNum);
+
+function creditCardValidation() {
+  const ccNumError = document.createElement("div");
+  ccNumError.setAttribute("id", "ccNumError");
+  ccNumError.innerHTML = "Invalid credit card number!";
+  var cardno = /^(?:3[47][0-9]{13})$/;
+  if (ccNum.value.match(cardno)) {
+    return true;
+  } else {
+    ccNum.parentNode.insertBefore(ccNumError, ccNum.nextSibling);
+    return false;
+  }
+}

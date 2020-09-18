@@ -215,22 +215,50 @@ const button = document.getElementById("submit");
 button.addEventListener("click", (e) => {
   activityValidation();
   emailValidation(emailField);
+  cardValidation(cardField);
+  zipValidation();
+  cvvValidation();
 });
 
 // credit card validation
 
-const ccNum = document.getElementById("cc-num");
-console.log(ccNum);
-
-function creditCardValidation() {
-  const ccNumError = document.createElement("div");
-  ccNumError.setAttribute("id", "ccNumError");
-  ccNumError.innerHTML = "Invalid credit card number!";
-  var cardno = /^(?:3[47][0-9]{13})$/;
-  if (ccNum.value.match(cardno)) {
+const cardField = document.getElementById("cc-num");
+function cardValidation() {
+  const ccDiv = document.getElementById("credit-card");
+  const ccError = document.createElement("div");
+  const cardField = document.getElementById("cc-num");
+  ccError.innerHTML = "Invalid card number";
+  var cardno = /^(?:[0-9]{16})$/; // checks for 16 numbers
+  if (cardField.value.match(cardno)) {
     return true;
   } else {
-    ccNum.parentNode.insertBefore(ccNumError, ccNum.nextSibling);
+    ccDiv.parentNode.insertBefore(ccError, ccDiv.nextSibling); // adds error message at bottom of div to show that the credit card number is invalid
     return false;
+  }
+}
+
+function zipValidation() {
+  const cardDiv = document.getElementById("credit-card");
+  const zipInput = document.getElementById("zip");
+  const zipError = document.createElement("div");
+  zipError.innerHTML = "The zip code is incorrect";
+  var zipCode = /^(?:[0-9]{5})$/;
+  if (zipInput.value.match(zipCode)) {
+    return true;
+  } else {
+    cardDiv.parentNode.insertBefore(zipError, cardDiv.nextSibling);
+  }
+}
+
+function cvvValidation() {
+  const cardDiv = document.getElementById("credit-card");
+  const cvvInput = document.getElementById("cvv");
+  const cvvError = document.createElement("div");
+  cvvError.innerHTML = "The cvv code is incorrect";
+  var cvvCode = /^(?:[0-9]{3})$/;
+  if (cvvInput.value.match(cvvCode)) {
+    return true;
+  } else {
+    cardDiv.parentNode.insertBefore(cvvError, cardDiv.nextSibling);
   }
 }

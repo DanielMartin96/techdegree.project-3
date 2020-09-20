@@ -1,4 +1,5 @@
 const nameField = document.querySelector("#name");
+const emailField = document.getElementById("mail");
 const otherJobContainer = document.querySelector(".otherJobContainer");
 const userTitleSelection = document.querySelector("#title");
 const selectionOther = "other";
@@ -92,13 +93,10 @@ designDropdown.addEventListener("change", (e) => {
 
 const activity = document.querySelector(".activities");
 let initialCost = 0;
-const total = document.createElement("h3");
-activity.appendChild(total);
 
 activity.addEventListener("change", (e) => {
   const inputClicked = e.target;
   const nameOfClicked = inputClicked.name;
-  const dataCost = inputClicked.getAttribute("data-cost");
   const dateAndTime = inputClicked.getAttribute("data-day-and-time");
   const listItems = activity.getElementsByTagName("input");
   for (i = 0; i < listItems.length; i++) {
@@ -115,15 +113,24 @@ activity.addEventListener("change", (e) => {
       }
     }
   }
+});
+
+let total = document.createElement("h3");
+activity.appendChild(total);
+
+activity.addEventListener("change", (e) => {
+  const inputClicked = e.target;
+  const dataCost = inputClicked.getAttribute("data-cost");
+  let totalCost = 0;
   if (e.target.checked) {
     initialCost += +dataCost;
-    let totalCost = "Total Cost: $";
     totalCost += initialCost;
+    total.innerHTML = `Total: $${totalCost}`;
     return totalCost;
   } else {
     initialCost -= +dataCost;
-    let totalCost = "Total Cost: $";
     totalCost += initialCost;
+    total.innerHTML = `Total: $${totalCost}`;
     return totalCost;
   }
 });
@@ -133,60 +140,41 @@ activity.addEventListener("change", (e) => {
 const paymentOptions = document.getElementById("payment"); // getting the payment options
 const selectPayment = (paymentOptions[0].style.display = "none"); // hiding the select payment option
 const creditCard = paymentOptions[1].setAttribute("selected", "selected"); // making credit card the deault option
+const payPalOption = paymentOptions[2];
+const bitcoinOption = paymentOptions[3];
 const creditCardNumberDiv = document.getElementById("credit-card"); // getting the credit card details to hide
+const payPal = document.getElementById("paypal");
+const bitcoin = document.getElementById("bitcoin");
 
 paymentOptions.addEventListener("change", (e) => {
   const creditCard = document.getElementById("payment")[1]; // getting the credit card option
   if (creditCard.selected) {
     creditCardNumberDiv.style.display = "block"; // showing details
+    payPal.style.display = "none";
+    bitcoin.style.display = "none";
+  } else if (payPalOption.selected) {
+    creditCardNumberDiv.style.display = "none"; // hiding details}
+    bitcoin.style.display = "none";
+    payPal.style.display = "block";
   } else {
-    creditCardNumberDiv.style.display = "none"; // hiding details
+    creditCardNumberDiv.style.display = "none"; // hiding details}
+    payPal.style.display = "none";
+    bitcoin.style.display = "block";
   }
+});
+
+window.addEventListener("load", (e) => {
+  payPal.style.display = "none";
+  bitcoin.style.display = "none";
 });
 
 // Form validation
 
 // Name validation
 
-function nameValidation(name) {
-  let nameError = document.createElement("div");
-  nameError.innerHTML = "Name field cannot be empty";
-  nameError.setAttribute("id", "nameError");
-  if (name.value.length == 0) {
-    nameField.parentNode.insertBefore(nameError, nameField.nextSibling);
-    return false;
-  } else {
-    // need to remove the div
-    nameError = document.getElementById("nameError");
-    nameError.parentNode.removeChild(nameError);
-    return true;
-  }
-}
-
-window.addEventListener("load", (e) => {
-  nameValidation(nameField);
-});
-
-nameField.addEventListener("keyup", (e) => {
-  nameValidation(nameField);
-});
-
 // email
-const emailField = document.getElementById("mail");
-function emailValidation() {
-  const emailError = document.createElement("div");
-  emailError.setAttribute("id", "emailError");
-  emailError.innerHTML = "Could you please provide a valid email please";
-  const correctEmailFormat = /[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3}$/.test(
-    emailField.value.toUpperCase()
-  );
-  if (correctEmailFormat) {
-    return true;
-  } else {
-    emailField.parentNode.insertBefore(emailError, emailField.nextSibling);
-    return false;
-  }
-}
+
+// need to get email input and compare it to a valid email address
 
 // user must check one checkbox
 
@@ -210,55 +198,4 @@ function activityValidation() {
   }
 }
 
-const button = document.getElementById("submit");
-
-button.addEventListener("click", (e) => {
-  activityValidation();
-  emailValidation(emailField);
-  cardValidation(cardField);
-  zipValidation();
-  cvvValidation();
-});
-
 // credit card validation
-
-const cardField = document.getElementById("cc-num");
-function cardValidation() {
-  const ccDiv = document.getElementById("credit-card");
-  const ccError = document.createElement("div");
-  const cardField = document.getElementById("cc-num");
-  ccError.innerHTML = "Invalid card number";
-  var cardno = /^(?:[0-9]{16})$/; // checks for 16 numbers
-  if (cardField.value.match(cardno)) {
-    return true;
-  } else {
-    ccDiv.parentNode.insertBefore(ccError, ccDiv.nextSibling); // adds error message at bottom of div to show that the credit card number is invalid
-    return false;
-  }
-}
-
-function zipValidation() {
-  const cardDiv = document.getElementById("credit-card");
-  const zipInput = document.getElementById("zip");
-  const zipError = document.createElement("div");
-  zipError.innerHTML = "The zip code is incorrect";
-  var zipCode = /^(?:[0-9]{5})$/;
-  if (zipInput.value.match(zipCode)) {
-    return true;
-  } else {
-    cardDiv.parentNode.insertBefore(zipError, cardDiv.nextSibling);
-  }
-}
-
-function cvvValidation() {
-  const cardDiv = document.getElementById("credit-card");
-  const cvvInput = document.getElementById("cvv");
-  const cvvError = document.createElement("div");
-  cvvError.innerHTML = "The cvv code is incorrect";
-  var cvvCode = /^(?:[0-9]{3})$/;
-  if (cvvInput.value.match(cvvCode)) {
-    return true;
-  } else {
-    cardDiv.parentNode.insertBefore(cvvError, cardDiv.nextSibling);
-  }
-}

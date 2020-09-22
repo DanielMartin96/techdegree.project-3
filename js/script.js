@@ -326,6 +326,8 @@ cvvCode.addEventListener("keyup", (e) => {
 //form submission
 // this runs all the validation functions
 
+const paymentValue = document.getElementById("payment").value;
+
 const form = document.querySelector("form");
 form.addEventListener("submit", (e) => {
   if (!nameValidation(nameField)) {
@@ -339,17 +341,18 @@ form.addEventListener("submit", (e) => {
   if (!activityValidation()) {
     e.preventDefault();
   }
+  if (paymentValue == "credit card") {
+    if (!validateCC(creditCardNumber)) {
+      e.preventDefault();
+    }
 
-  if (!validateCC(creditCardNumber)) {
-    e.preventDefault();
-  }
+    if (!validateCvv(cvvCode)) {
+      e.preventDefault();
+    }
 
-  if (!validateCvv(cvvCode)) {
-    e.preventDefault();
-  }
-
-  if (!validateZip(zipCode)) {
-    e.preventDefault();
+    if (!validateZip(zipCode)) {
+      e.preventDefault();
+    }
   }
 });
 

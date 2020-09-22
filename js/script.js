@@ -169,12 +169,53 @@ window.addEventListener("load", (e) => {
 });
 
 // Form validation
-
 // Name validation
+
+const nameError = document.createElement('h3');
+nameError.innerHTML = "Please provide a valid name";
+nameError.style.color = 'Red';
+nameField.parentNode.insertBefore(nameError, nameField.nextSibling);
+
+function nameValidation(name) {
+  if (name.value.length == 0) {
+    name.style.border = '5px red solid';
+    nameError.style.display = 'block';
+  } else {
+    name.style.border = '5px green solid';
+    nameError.style.display = 'none';
+  }
+}
+
+window.addEventListener('load', (e) => {
+  nameValidation(nameField)
+  emailValidation(emailField)
+})
+
+nameField.addEventListener('keyup', (e) => {
+  nameValidation(nameField)
+})
 
 // email
 
-// need to get email input and compare it to a valid email address
+const emailError = document.createElement('h3');
+emailError.innerHTML = 'Please provide a valid email address';
+emailError.style.color = 'red';
+emailField.parentNode.insertBefore(emailError, emailField.nextSibling);
+
+function emailValidation(mail) {
+  if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail.value)) {
+    mail.style.border = '5px green solid';
+    emailError.style.display = 'none';
+    return true;
+  }
+  mail.style.border = "5px red solid";
+  emailError.style.display = 'block';
+  return false
+}
+
+emailField.addEventListener('keyup', (e) => {
+  emailValidation(emailField)
+})
 
 // user must check one checkbox
 
@@ -199,3 +240,24 @@ function activityValidation() {
 }
 
 // credit card validation
+
+const creditCardNumber = document.getElementById('cc-num');
+const ccError = document.createElement('h3');
+ccError.innerHTML = 'Please provide a valid CC number';
+ccError.style.color = 'red';
+creditCardNumber.parentNode.insertBefore(ccError, creditCardNumber.nextSibling)
+
+function validateCC(number) {
+  if (/"^[0-9]{16}$"/.test(number.value)) {
+    number.style.border = '5px green solid';
+    ccError.style.display = 'none';
+    return true;
+  }
+  number.style.border = "5px red solid";
+  ccError.style.display = 'block';
+  return false
+}
+
+creditCardNumber.addEventListener('change', (e) => {
+  validateCC(creditCardNumber)
+})

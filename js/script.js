@@ -170,60 +170,65 @@ window.addEventListener("load", (e) => {
 
 // Form validation
 // Name validation
+// looks at the length of the name field. If its 0 then an error is shown
 
-const nameError = document.createElement('h3');
+const nameError = document.createElement("h3");
 nameError.innerHTML = "Please provide a valid name";
-nameError.style.color = 'Red';
+nameError.style.color = "Red";
 nameField.parentNode.insertBefore(nameError, nameField.nextSibling);
+nameError.style.display = "none";
 
 function nameValidation(name) {
   if (name.value.length == 0) {
-    name.style.border = '5px red solid';
-    nameError.style.display = 'block';
+    name.style.border = "5px red solid";
+    nameError.style.display = "block";
   } else {
-    name.style.border = '5px green solid';
-    nameError.style.display = 'none';
+    name.style.border = "5px green solid";
+    nameError.style.display = "none";
   }
 }
 
-window.addEventListener('load', (e) => {
-  nameValidation(nameField)
-  emailValidation(emailField)
-})
-
-nameField.addEventListener('keyup', (e) => {
-  nameValidation(nameField)
-})
+nameField.addEventListener("keyup", (e) => {
+  nameValidation(nameField);
+});
 
 // email
+// very similar to the other validation functions. Tests the email field against the reg ex
 
-const emailError = document.createElement('h3');
-emailError.innerHTML = 'Please provide a valid email address';
-emailError.style.color = 'red';
+const emailError = document.createElement("h3");
+emailError.innerHTML = "Please provide a valid email address";
+emailError.style.color = "red";
 emailField.parentNode.insertBefore(emailError, emailField.nextSibling);
+emailError.style.display = "none";
 
 function emailValidation(mail) {
-  if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail.value)) {
-    mail.style.border = '5px green solid';
-    emailError.style.display = 'none';
+  if (
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+      mail.value
+    )
+  ) {
+    mail.style.border = "5px green solid";
+    emailError.style.display = "none";
     return true;
   }
   mail.style.border = "5px red solid";
-  emailError.style.display = 'block';
-  return false
+  emailError.style.display = "block";
+  return false;
 }
 
-emailField.addEventListener('keyup', (e) => {
-  emailValidation(emailField)
-})
+emailField.addEventListener("keyup", (e) => {
+  emailValidation(emailField);
+});
 
 // user must check one checkbox
+// this looks at how many checkboxes are checked. If none are checked then an error is shown
 
 function activityValidation() {
   const checkboxes = activity.getElementsByTagName("input");
   const activityError = document.createElement("li");
   activityError.setAttribute("div", "activityError");
   activityError.innerHTML = "Please choose at least one activity";
+  activityError.style.color = "red";
   if (
     checkboxes[0].checked ||
     checkboxes[1].checked ||
@@ -240,24 +245,112 @@ function activityValidation() {
 }
 
 // credit card validation
+// the next three functions are very similar. Looking back now I could maybe use a function to validate each field as a lot of the code looks the same
 
-const creditCardNumber = document.getElementById('cc-num');
-const ccError = document.createElement('h3');
-ccError.innerHTML = 'Please provide a valid CC number';
-ccError.style.color = 'red';
-creditCardNumber.parentNode.insertBefore(ccError, creditCardNumber.nextSibling)
+const creditCardNumber = document.getElementById("cc-num");
+const ccError = document.createElement("h3");
+ccError.innerHTML = "Please provide a valid CC number";
+ccError.style.color = "red";
+creditCardNumber.parentNode.insertBefore(ccError, creditCardNumber.nextSibling);
+ccError.style.display = "none";
 
-function validateCC(number) {
-  if (/"^[0-9]{16}$"/.test(number.value)) {
-    number.style.border = '5px green solid';
-    ccError.style.display = 'none';
-    return true;
+function validateCC(ccNumber) {
+  var regex = new RegExp("^[0-9]{13,16}$");
+  if (!regex.test(ccNumber.value)) {
+    ccNumber.style.border = "5px red solid";
+    ccError.style.display = "block";
+    return false;
+  } else {
+    ccNumber.style.border = "5px green solid";
+    ccError.style.display = "none";
+    true;
   }
-  number.style.border = "5px red solid";
-  ccError.style.display = 'block';
-  return false
 }
 
-creditCardNumber.addEventListener('change', (e) => {
-  validateCC(creditCardNumber)
-})
+creditCardNumber.addEventListener("keyup", (e) => {
+  validateCC(creditCardNumber);
+});
+
+// zip code validation
+
+const zipCode = document.getElementById("zip");
+const zipError = document.createElement("h3");
+zipError.innerHTML = "Please provide a valid ZIP number";
+zipError.style.color = "red";
+zipCode.parentNode.insertBefore(zipError, zipCode.nextSibling);
+zipError.style.display = "none";
+
+function validateZip(zipNumber) {
+  var regex = new RegExp("^[0-9]{5}$");
+  if (!regex.test(zipNumber.value)) {
+    zipNumber.style.border = "5px red solid";
+    zipError.style.display = "block";
+    return false;
+  } else {
+    zipNumber.style.border = "5px green solid";
+    zipError.style.display = "none";
+    true;
+  }
+}
+
+zipCode.addEventListener("keyup", (e) => {
+  validateZip(zipCode);
+});
+
+// cvv validation
+
+const cvvCode = document.getElementById("cvv");
+const cvvError = document.createElement("h3");
+cvvError.innerHTML = "Please provide a valid ZIP number";
+cvvError.style.color = "red";
+cvvCode.parentNode.insertBefore(cvvError, cvvCode.nextSibling);
+cvvError.style.display = "none";
+
+function validateCvv(cvvNumber) {
+  var regex = new RegExp("^[0-9]{3}$");
+  if (!regex.test(cvvNumber.value)) {
+    cvvNumber.style.border = "5px red solid";
+    cvvError.style.display = "block";
+    return false;
+  } else {
+    cvvNumber.style.border = "5px green solid";
+    cvvError.style.display = "none";
+    true;
+  }
+}
+
+cvvCode.addEventListener("keyup", (e) => {
+  validateCvv(cvvCode);
+});
+
+//form submission
+// this runs all the validation functions
+
+const form = document.querySelector("form");
+form.addEventListener("submit", (e) => {
+  if (!nameValidation(nameField)) {
+    e.preventDefault();
+  }
+
+  if (!emailValidation(emailField)) {
+    e.preventDefault();
+  }
+
+  if (!activityValidation()) {
+    e.preventDefault();
+  }
+
+  if (!validateCC(creditCardNumber)) {
+    e.preventDefault();
+  }
+
+  if (!validateCvv(cvvCode)) {
+    e.preventDefault();
+  }
+
+  if (!validateZip(zipCode)) {
+    e.preventDefault();
+  }
+});
+
+document.querySelector("form").reset();

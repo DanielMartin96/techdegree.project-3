@@ -182,9 +182,11 @@ function nameValidation(name) {
   if (name.value.length == 0) {
     name.style.border = "5px red solid";
     nameError.style.display = "block";
+    return false;
   } else {
     name.style.border = "5px green solid";
     nameError.style.display = "none";
+    return true;
   }
 }
 
@@ -203,7 +205,7 @@ emailError.style.display = "none";
 
 function emailValidation(mail) {
   if (
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
       mail.value
     )
   ) {
@@ -239,8 +241,10 @@ function activityValidation() {
     checkboxes[6].checked
   ) {
     console.log("One is checked");
+    return true;
   } else {
     activity.appendChild(activityError);
+    return false;
   }
 }
 
@@ -263,7 +267,7 @@ function validateCC(ccNumber) {
   } else {
     ccNumber.style.border = "5px green solid";
     ccError.style.display = "none";
-    true;
+    return true;
   }
 }
 
@@ -289,7 +293,7 @@ function validateZip(zipNumber) {
   } else {
     zipNumber.style.border = "5px green solid";
     zipError.style.display = "none";
-    true;
+    return true;
   }
 }
 
@@ -315,7 +319,7 @@ function validateCvv(cvvNumber) {
   } else {
     cvvNumber.style.border = "5px green solid";
     cvvError.style.display = "none";
-    true;
+    return true;
   }
 }
 
@@ -330,6 +334,7 @@ const paymentValue = document.getElementById("payment").value;
 
 const form = document.querySelector("form");
 form.addEventListener("submit", (e) => {
+  const paymentValue = document.getElementById("payment").value;
   if (!nameValidation(nameField)) {
     e.preventDefault();
   }
